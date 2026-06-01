@@ -21,19 +21,27 @@ def check_winner(board):
 def is_full(board):
     return all(cell != " " for row in board for cell in row)
 
+def get_input(prompt):
+    try:
+        val = int(input(prompt))
+        if val not in range(3):
+            print("Invalid input. Please enter 0, 1, or 2.")
+            return None
+        return val
+    except ValueError:
+        print("Invalid input. Please enter numbers only.")
+        return None
+
 def tic_tac_toe():
     board = [[" "]*3 for _ in range(3)]
     player = "X"
     while True:
         print_board(board)
-        try:
-            row = int(input("Enter row (0, 1, or 2) for player " + player + ": "))
-            col = int(input("Enter column (0, 1, or 2) for player " + player + ": "))
-            if row not in range(3) or col not in range(3):
-                print("Invalid input. Please enter 0, 1, or 2.")
-                continue
-        except ValueError:
-            print("Invalid input. Please enter numbers only.")
+        row = get_input("Enter row (0, 1, or 2) for player " + player + ": ")
+        if row is None:
+            continue
+        col = get_input("Enter column (0, 1, or 2) for player " + player + ": ")
+        if col is None:
             continue
         if board[row][col] == " ":
             board[row][col] = player
@@ -45,10 +53,7 @@ def tic_tac_toe():
                 print_board(board)
                 print("It's a draw!")
                 break
-            if player == "X":
-                player = "O"
-            else:
-                player = "X"
+            player = "O" if player == "X" else "X"
         else:
             print("That spot is already taken! Try again.")
 
